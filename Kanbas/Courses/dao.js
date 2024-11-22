@@ -1,9 +1,12 @@
 import Database from "../Database/index.js";
+import * as enrollmentsDao from "../Enrollments/dao.js"
+
 export function findAllCourses() {
   return Database.courses;
 }
 export function findCoursesForEnrolledUser(userId) {
-  const { courses, enrollments } = Database;
+  const enrollments = enrollmentsDao.getEnrollments();
+  const { courses } = Database;
   const enrolledCourses = courses.filter((course) =>
     enrollments.some(
       (enrollment) =>
@@ -18,7 +21,8 @@ export function createCourse(course) {
   return newCourse;
 }
 export function deleteCourse(courseId) {
-  const { courses, enrollments } = Database;
+  const enrollments = enrollmentsDao.getEnrollments();
+  const { courses } = Database;
   Database.courses = courses.filter((course) => course._id !== courseId);
   Database.enrollments = enrollments.filter(
     (enrollment) => enrollment.course !== courseId

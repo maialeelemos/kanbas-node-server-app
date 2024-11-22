@@ -12,4 +12,9 @@ export default function EnrollmentRoutes(app) {
     const status = await enrollmentsDao.unenrollUserInCourse(userId, courseId);
     res.send(status);
   });
+
+  app.get("/api/enrollments/", async (req, res) => {
+    const enrollments = await enrollmentsDao.getEnrollments();
+    res.json(enrollments);
+  });
 }

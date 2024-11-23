@@ -6,8 +6,8 @@ export function enrollUserInCourse(userId, courseId) {
 }
 
 export function unenrollUserInCourse(userId, courseId) {
-  enrollments.filter((enrollment) => {
-    enrollment.user !== userId || enrollment.course !== courseId;
+  Database.enrollments = enrollments.filter((enrollment) => {
+    return !(enrollment.user === userId && enrollment.course === courseId);
   });
 }
 

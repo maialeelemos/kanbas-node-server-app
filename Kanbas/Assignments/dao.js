@@ -15,7 +15,7 @@ export function createAssignment(assignment) {
   return newAssignment;
 }
 export function deleteAssignment(assignmentId) {
-  const { assignments, enrollments } = Database;
+  const { assignments } = Database;
   Database.assignments = assignments.filter(
     (assignment) => assignment._id !== assignmentId
   );

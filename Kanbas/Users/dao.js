@@ -1,4 +1,5 @@
 import model from "./model.js";
+import enrollmentsModel from "../Enrollments/model.js";
 
 export const createUser = (user) => {
   delete user._id;
@@ -20,11 +21,25 @@ export const updateUser = (userId, user) =>
 
 export const deleteUser = (userId) => model.deleteOne({ _id: userId });
 
-export const findUsersByRole = (role) => model.find({ role: role }); // or just model.find({ role })
+export async function findUsersByRole(role, course) {
+  const enrollments = await enrollmentsModel
+    .find({ course: course })
+    .populate("user");
+  return enrollments
+    .filter((enrollment) => enrollment.user.role === role)
+    .map((enrollment) => enrollment.user);
+}
 
-export const findUsersByPartialName = (partialName) => {
+export async function findUsersByPartialName(partialName, course) {
   const regex = new RegExp(partialName, "i"); // 'i' makes it case-insensitive
-  return model.find({
-    $or: [{ firstName: { $regex: regex } }, { lastName: { $regex: regex } }],
-  });
-};
+  const enrollments = await enrollmentsModel
+    .find({ course: course })
+    .populate("user");
+  return enrollments
+    .filter(
+      (enrollment) =>
+        regex.test(enrollment.user.firstName) ||
+        regex.test(enrollment.user.lastName)
+    )
+    .map((enrollment) => enrollment.user);
+}

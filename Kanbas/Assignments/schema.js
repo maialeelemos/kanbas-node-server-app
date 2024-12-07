@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const assignmentSchema = new mongoose.Schema(
   {
     title: String,
-    course: { type: mongoose.Schema.Types.ObjectId, ref: "AssignmentModel" },
+    course: { type: mongoose.Schema.Types.ObjectId, ref: "CourseModel" },
     points: Number,
     availableDateTime: Date,
     dueDateTime: Date,
